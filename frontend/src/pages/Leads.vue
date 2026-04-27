@@ -1,74 +1,88 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="px-4 pt-3 pb-2">
-      <SearchBar v-model="search" :placeholder="`Search ${term('lead', 'Leads')}...`" />
+      <SearchBar v-model="search" :placeholder="`Search ${term('lead', 'leads')}...`" />
     </div>
+    <SegmentPills v-model="activeSegment" :segments="pills" />
     <InfiniteList
-      :items="leads"
-      :loading="loading"
-      :has-more="hasMore"
-      :empty-title="`No ${term('lead', 'leads')} yet`"
-      :empty-message="`New ${term('lead', 'leads')} will appear here automatically.`"
+      :items="currentItems"
+      :loading="currentLoading"
+      :has-more="currentHasMore"
+      :empty-title="`No ${currentLabel.toLowerCase()} yet`"
+      :empty-message="emptyMessage"
       @load-more="loadMore"
     >
       <template #default="{ item }">
-        <LeadCard :lead="item" @tap="openLead" />
+        <ProspectCard :item="item" @tap="open" />
       </template>
     </InfiniteList>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SearchBar from '@/components/common/SearchBar.vue'
+import SegmentPills from '@/components/common/SegmentPills.vue'
 import InfiniteList from '@/components/lists/InfiniteList.vue'
-import LeadCard from '@/components/cards/LeadCard.vue'
+import ProspectCard from '@/components/cards/ProspectCard.vue'
+import { useLeadsStore } from '@/stores/leadsStore'
 import { useVertical } from '@/composables/useVertical'
-import { getList } from '@/utils/api'
-import { PAGE_SIZE } from '@/utils/constants'
 
 const router = useRouter()
-const { term } = useVertical()
+const leadsStore = useLeadsStore()
+const { config, term } = useVertical()
 
-const leads = ref([])
-const loading = ref(false)
-const hasMore = ref(true)
 const search = ref('')
-let start = 0
+const activeSegment = ref('new')
 
-async function fetchLeads(reset = false) {
-  if (loading.value) return
-  loading.value = true
-  if (reset) {
-    start = 0
-    leads.value = []
-    hasMore.value = true
-  }
-  try {
-    const filters = search.value
-      ? [['lead_name', 'like', `%${search.value}%`]]
-      : []
-    const data = await getList('CRM Lead', {
-      fields: ['name', 'first_name', 'last_name', 'lead_name', 'mobile_no', 'phone', 'email_id', 'source', 'status', 'modified'],
-      filters,
-      orderBy: 'modified desc',
-      pageLength: PAGE_SIZE,
-      start,
-    })
-    leads.value = reset ? data : [...leads.value, ...data]
-    hasMore.value = data.length === PAGE_SIZE
-    start += data.length
-  } catch (err) {
-    console.error('Failed to load leads:', err)
-  } finally {
-    loading.value = false
-  }
+const segmentDefs = computed(() => config.value?.leads_segments || [
+  { key: 'new', label: 'New', filter: { doctype: 'CRM Lead', status_in: ['Open', 'Replied'] } },
+  { key: 'pipeline', label: 'Pipeline', filter: { doctype: 'CRM Deal', status_not_in: ['Won', 'Lost'] } },
+  { key: 'closed', label: 'Closed', filter: { doctype: '*', status_in: ['Lost'] } },
+])
+
+const pills = computed(() =>
+  segmentDefs.value.map((s) => ({
+    key: s.key,
+    label: s.label,
+    count: (leadsStore.segments[s.key]?.items || []).length || null,
+  })),
+)
+
+const activeFilter = computed(() => segmentDefs.value.find((s) => s.key === activeSegment.value)?.filter)
+
+const currentItems = computed(() => leadsStore.items(activeSegment.value))
+const currentLoading = computed(() => (leadsStore.segments[activeSegment.value] || {}).loading)
+const currentHasMore = computed(() => (leadsStore.segments[activeSegment.value] || {}).hasMore !== false)
+const currentLabel = computed(() => pills.value.find((p) => p.key === activeSegment.value)?.label || 'leads')
+
+const emptyMessage = computed(() => {
+  if (activeSegment.value === 'new') return 'New enquiries will appear here.'
+  if (activeSegment.value === 'pipeline') return 'Active deals will appear here once leads convert.'
+  return 'Lost or cancelled deals will appear here.'
+})
+
+async function load() {
+  if (!activeFilter.value) return
+  await leadsStore.loadSegment(activeSegment.value, activeFilter.value, { reset: true, search: search.value })
 }
 
-function loadMore() { fetchLeads(false) }
-function openLead(lead) { router.push({ name: 'LeadDetail', params: { id: lead.name } }) }
+async function loadMore() {
+  if (!activeFilter.value) return
+  await leadsStore.loadSegment(activeSegment.value, activeFilter.value, { reset: false, search: search.value })
+}
 
-watch(search, () => fetchLeads(true))
-onMounted(() => fetchLeads(true))
+function open(item) {
+  router.push(`/person/${encodeURIComponent(item.name)}`)
+}
+
+let searchTimer
+watch(search, () => {
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(load, 300)
+})
+
+watch(activeSegment, load)
+onMounted(load)
 </script>
