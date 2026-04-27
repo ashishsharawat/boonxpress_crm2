@@ -65,3 +65,18 @@ export function getInitials(name) {
     .join('')
     .toUpperCase()
 }
+
+/**
+ * Format a relative timestamp at second/minute/hour/day granularity.
+ * "2h ago", "5d ago", "10s ago". Use formatRelativeDate for day-level grouping.
+ */
+export function formatRelative(isoOrDate) {
+  if (!isoOrDate) return ''
+  const then = new Date(isoOrDate).getTime()
+  const now = Date.now()
+  const sec = Math.max(0, Math.round((now - then) / 1000))
+  if (sec < 60) return `${sec}s ago`
+  if (sec < 3600) return `${Math.round(sec / 60)}m ago`
+  if (sec < 86400) return `${Math.round(sec / 3600)}h ago`
+  return `${Math.round(sec / 86400)}d ago`
+}
