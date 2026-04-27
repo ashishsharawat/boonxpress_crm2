@@ -39,5 +39,24 @@
   "fab_actions": [
     { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" },
     { "label": "New Deal", "icon": "TrendingUp", "action": "create_deal" }
-  ]
+  ],
+  "conversion_mode": "manual",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "active", "label": "Active", "filter": { "won_deal_within_days": 90 } },
+    { "key": "dormant", "label": "Dormant", "filter": { "won_deal_older_than_days": 90 } }
+  ],
+  "deal_stages": ["Qualification", "Demo", "Proposal", "Negotiation"],
+  "person_primary_action": { "label": "Send Quote", "icon": "FileText", "action": "create_deal" },
+  "profile_fields": [
+    { "key": "industry", "label": "Industry", "type": "text" },
+    { "key": "website", "label": "Website", "type": "url" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "task"],
+  "appointment_to_deal_status_map": {}
 }

@@ -46,5 +46,25 @@
   "fab_actions": [
     { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" },
     { "label": "Log Walk-in", "icon": "FootprintsIcon", "action": "create_walkin" }
-  ]
+  ],
+  "conversion_mode": "manual",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "service", "label": "Service customers", "filter": { "has_service_tag": true } },
+    { "key": "lapsed", "label": "Lapsed", "filter": { "days_since_last_visit_gt": 180 } }
+  ],
+  "deal_stages": ["Qualification", "Inspection", "Quote", "Negotiation"],
+  "person_primary_action": { "label": "Send Quote", "icon": "FileText", "action": "create_deal" },
+  "profile_fields": [
+    { "key": "vehicle_make", "label": "Vehicle make", "type": "text" },
+    { "key": "vehicle_model", "label": "Vehicle model", "type": "text" },
+    { "key": "registration_no", "label": "Registration no.", "type": "text" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_to_deal_status_map": {}
 }
