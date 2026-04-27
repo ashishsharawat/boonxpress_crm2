@@ -98,13 +98,18 @@ def cleanup_test_records():
         )
         for name in names:
             try:
+                # Frappe 15 dropped `ignore_links` from delete_doc; force + ignore_missing
+                # still skip link-integrity checks for test cleanup safely.
                 frappe.delete_doc(
                     doctype,
                     name,
                     force=True,
-                    ignore_links=True,
+                    ignore_missing=True,
                     delete_permanently=True,
                 )
             except frappe.DoesNotExistError:
+                continue
+            except Exception:
+                # Best-effort cleanup; never crash tearDown
                 continue
     frappe.db.commit()
