@@ -1,0 +1,57 @@
+{
+  "vertical_type": "usedcar",
+  "display_name": "Used Car Dealer",
+  "icon": "car",
+  "color_scheme": {
+    "primary": "#0EA5E9",
+    "primary_light": "#7DD3FC",
+    "primary_bg": "#F0F9FF",
+    "primary_dark": "#0369A1",
+    "accent": "#F59E0B",
+    "text_primary": "#0F172A",
+    "text_secondary": "#475569",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F0F9FF"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Customers", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Leads", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "UsedCarHome",
+  "visible_modules": ["contacts", "leads", "deals", "whatsapp", "inventory"],
+  "hidden_modules": [],
+  "stats_config": [
+    { "key": "active_deals", "label": "Active Deals", "icon": "TrendingUp" },
+    { "key": "new_leads", "label": "New Leads", "icon": "Target" },
+    { "key": "test_drives_today", "label": "Test Drives", "icon": "Car" }
+  ],
+  "terminology": { "contact": "Customer", "lead": "Lead", "deal": "Deal", "organization": null },
+  "fab_actions": [
+    { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" },
+    { "label": "New Deal", "icon": "FilePlus", "action": "create_deal" }
+  ],
+  "conversion_mode": "manual",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "owners", "label": "Owners", "filter": { "has_won_deal": true } },
+    { "key": "service", "label": "Service", "filter": { "has_service_tag": true } }
+  ],
+  "deal_stages": ["Qualification", "Test Drive", "Quote Sent", "Negotiation", "Financing"],
+  "person_primary_action": { "label": "Send Quote", "icon": "FileText", "action": "create_deal" },
+  "profile_fields": [
+    { "key": "interested_make", "label": "Interested in (make)", "type": "text" },
+    { "key": "interested_model", "label": "Interested in (model)", "type": "text" },
+    { "key": "budget_range", "label": "Budget range", "type": "text" },
+    { "key": "trade_in_vehicle", "label": "Trade-in vehicle", "type": "text" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "task"],
+  "appointment_to_deal_status_map": {}
+}

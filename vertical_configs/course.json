@@ -1,0 +1,56 @@
+{
+  "vertical_type": "course",
+  "display_name": "Course / Workshop",
+  "icon": "graduation-cap",
+  "color_scheme": {
+    "primary": "#F97316",
+    "primary_light": "#FDBA74",
+    "primary_bg": "#FFF7ED",
+    "primary_dark": "#C2410C",
+    "accent": "#10B981",
+    "text_primary": "#1C1917",
+    "text_secondary": "#57534E",
+    "surface": "#FFFFFF",
+    "surface_alt": "#FFF7ED"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Students", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Enquiries", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "CourseHome",
+  "visible_modules": ["contacts", "leads", "deals", "whatsapp", "batches", "enrollments"],
+  "hidden_modules": [],
+  "stats_config": [
+    { "key": "active_batches", "label": "Active Batches", "icon": "Calendar" },
+    { "key": "new_leads", "label": "New Enquiries", "icon": "Target" },
+    { "key": "enrollments_this_week", "label": "Enrolled / week", "icon": "UserCheck" }
+  ],
+  "terminology": { "contact": "Student", "lead": "Enquiry", "deal": "Enrollment", "organization": "Institute" },
+  "fab_actions": [
+    { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" },
+    { "label": "New Enrollment", "icon": "FilePlus", "action": "create_deal" }
+  ],
+  "conversion_mode": "manual",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Active enrollments", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "enrolled", "label": "Currently enrolled", "filter": { "active_enrollment": true } },
+    { "key": "past", "label": "Past students", "filter": { "active_enrollment": false } }
+  ],
+  "deal_stages": ["Enquiry", "Counselled", "Demo Class", "Payment Pending", "Enrolled"],
+  "person_primary_action": { "label": "Enroll", "icon": "UserCheck", "action": "create_deal" },
+  "profile_fields": [
+    { "key": "interested_courses", "label": "Interested courses", "type": "tags" },
+    { "key": "education_level", "label": "Education level", "type": "text" },
+    { "key": "preferred_batch_time", "label": "Preferred batch time", "type": "text" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "task"],
+  "appointment_to_deal_status_map": {}
+}

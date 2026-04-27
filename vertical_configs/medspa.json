@@ -1,0 +1,57 @@
+{
+  "vertical_type": "medspa",
+  "display_name": "Med Spa",
+  "icon": "sparkles",
+  "color_scheme": {
+    "primary": "#8B5CF6",
+    "primary_light": "#C4B5FD",
+    "primary_bg": "#F5F3FF",
+    "primary_dark": "#6D28D9",
+    "accent": "#10B981",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F5F3FF"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Patients", "icon": "Heart", "route": "/clients" },
+    { "key": "leads", "label": "Enquiries", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "MedSpaHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "appointments", "treatments"],
+  "hidden_modules": ["pipeline_board", "data_import"],
+  "stats_config": [
+    { "key": "appointments_today", "label": "Today", "icon": "Calendar" },
+    { "key": "new_leads", "label": "New Enquiries", "icon": "Target" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": { "contact": "Patient", "lead": "Enquiry", "deal": null, "organization": null },
+  "fab_actions": [
+    { "label": "New Appointment", "icon": "CalendarPlus", "action": "create_appointment" },
+    { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" }
+  ],
+  "conversion_mode": "auto",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "vip", "label": "VIP", "filter": { "lifetime_value_gte": 50000 } },
+    { "key": "lapsed", "label": "Lapsed", "filter": { "days_since_last_visit_gt": 90 } }
+  ],
+  "deal_stages": ["Qualification", "Consultation", "Proposal", "Booked"],
+  "person_primary_action": { "label": "Book Treatment", "icon": "CalendarPlus", "action": "create_appointment" },
+  "profile_fields": [
+    { "key": "preferred_treatments", "label": "Preferred treatments", "type": "tags" },
+    { "key": "date_of_birth", "label": "Date of birth", "type": "date" },
+    { "key": "skin_type", "label": "Skin type", "type": "text" },
+    { "key": "medical_notes", "label": "Medical notes", "type": "textarea" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_to_deal_status_map": { "Booked": "Booked", "Completed": "Won", "No Show": "Lost", "Cancelled": "Lost" }
+}
