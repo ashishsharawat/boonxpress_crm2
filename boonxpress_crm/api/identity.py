@@ -90,32 +90,42 @@ def _safe_get(doctype, name):
 
 
 def _deals_for_lead(lead):
-    if not lead:
+    """Find Deals linked back to this Lead.
+
+    Frappe CRM's CRM Deal has a flat `lead` field (Link to CRM Lead) that
+    `convert_to_deal()` populates. We use explicit filter list form to
+    avoid edge cases where the dict-form filter gets ignored.
+    """
+    if not lead or not lead.get("name"):
         return []
-    deal_names = frappe.get_all("CRM Deal", filters={"lead": lead["name"]}, pluck="name")
+    deal_names = frappe.get_all(
+        "CRM Deal",
+        filters=[["lead", "=", lead["name"]]],
+        pluck="name",
+    )
     return [frappe.get_doc("CRM Deal", n).as_dict() for n in deal_names]
 
 
 def _deals_for_contact(contact_name):
-    rows = frappe.db.sql(
-        """
-        SELECT DISTINCT parent FROM `tabCRM Deal Contact`
-        WHERE contact = %s
-        """,
-        (contact_name,),
-        as_dict=False,
+    """Find Deals linked to this Contact via the flat `contact` field."""
+    if not contact_name:
+        return []
+    deal_names = frappe.get_all(
+        "CRM Deal",
+        filters=[["contact", "=", contact_name]],
+        pluck="name",
     )
-    return [frappe.get_doc("CRM Deal", row[0]).as_dict() for row in rows]
+    return [frappe.get_doc("CRM Deal", n).as_dict() for n in deal_names]
 
 
 def _contact_from_deal(deal):
+    """Frappe CRM Deal stores a single `contact` Link, not a child table."""
     if not deal:
         return None
-    contacts = deal.get("contacts") or []
-    if not contacts:
+    contact_name = deal.get("contact")
+    if not contact_name:
         return None
-    primary = next((c for c in contacts if c.get("is_primary")), contacts[0])
-    return _safe_get("Contact", primary.get("contact"))
+    return _safe_get("Contact", contact_name)
 
 
 def _organization_from_deal(deal):
