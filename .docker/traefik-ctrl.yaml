@@ -1,0 +1,31 @@
+# Traefik dynamic config for ctrl.enabble.com → BoonCRM control site
+# Place this at: /data/coolify/proxy/dynamic/ctrl-enabble-com.yaml
+# Coolify-proxy (Traefik) auto-reloads dynamic configs.
+
+http:
+  routers:
+    ctrl-enabble-http:
+      rule: "Host(`ctrl.enabble.com`)"
+      entryPoints:
+        - http
+      middlewares:
+        - tenant-redirect-to-https
+      service: booncrm-ctrl-frontend
+      priority: 100
+
+    ctrl-enabble-https:
+      rule: "Host(`ctrl.enabble.com`)"
+      entryPoints:
+        - https
+      middlewares:
+        - tenant-gzip
+      service: booncrm-ctrl-frontend
+      tls:
+        certResolver: letsencrypt
+      priority: 100
+
+  services:
+    booncrm-ctrl-frontend:
+      loadBalancer:
+        servers:
+          - url: "http://booncrm-ctrl-frontend-1:8080"

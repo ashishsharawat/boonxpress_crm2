@@ -1,0 +1,50 @@
+{
+  "vertical_type": "clinic",
+  "display_name": "Med Spa & Dental",
+  "icon": "stethoscope",
+  "color_scheme": {
+    "primary": "#6366F1",
+    "primary_light": "#818CF8",
+    "primary_bg": "#F5F3FF",
+    "primary_dark": "#4338CA",
+    "accent": "#10B981",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F5F3FF"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Patients", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Leads", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "ClinicHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "appointments", "pipeline", "onboarding"],
+  "hidden_modules": ["deals", "organizations", "call_logs", "data_import"],
+  "contact_fields": [
+    { "fieldname": "treatment_tags", "label": "Treatments", "fieldtype": "MultiSelect", "options": "Botox\nHydraFacial\nLaser\nPRP\nDental Cleaning\nRoot Canal\nBraces\nImplant\nSkin Peel" },
+    { "fieldname": "last_visit_date", "label": "Last Visit", "fieldtype": "Date" },
+    { "fieldname": "date_of_birth", "label": "Date of Birth", "fieldtype": "Date" },
+    { "fieldname": "consent_status", "label": "Consent Status", "fieldtype": "Select", "options": "Not Sent\nSent\nSigned\nExpired" }
+  ],
+  "lead_fields": [
+    { "fieldname": "interested_treatment", "label": "Interested Treatment", "fieldtype": "Select", "options": "Botox\nHydraFacial\nLaser\nPRP\nDental\nConsultation\nOther" }
+  ],
+  "stats_config": [
+    { "key": "consultations_today", "label": "Today", "icon": "Calendar" },
+    { "key": "new_leads", "label": "New Leads", "icon": "Target" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": {
+    "contact": "Patient",
+    "lead": "Lead",
+    "deal": "Consultation",
+    "organization": null
+  },
+  "fab_actions": [
+    { "label": "New Consultation", "icon": "CalendarPlus", "action": "create_appointment" },
+    { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" }
+  ]
+}

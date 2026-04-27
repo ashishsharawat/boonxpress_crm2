@@ -1,0 +1,140 @@
+{
+  "actions": [],
+  "autoname": "field:template_name",
+  "creation": "2026-04-23 10:00:00",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "template_name",
+    "display_name",
+    "icon",
+    "home_component",
+    "column_break_1",
+    "color_scheme",
+    "section_break_modules",
+    "nav_items",
+    "visible_modules",
+    "hidden_modules",
+    "section_break_fields",
+    "contact_fields",
+    "lead_fields",
+    "section_break_ui",
+    "stats_config",
+    "terminology",
+    "fab_actions"
+  ],
+  "fields": [
+    {
+      "fieldname": "template_name",
+      "fieldtype": "Data",
+      "label": "Template Name",
+      "reqd": 1,
+      "unique": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "display_name",
+      "fieldtype": "Data",
+      "label": "Display Name",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "icon",
+      "fieldtype": "Data",
+      "label": "Icon"
+    },
+    {
+      "fieldname": "home_component",
+      "fieldtype": "Data",
+      "label": "Home Component",
+      "description": "Vue component name, e.g. SalonHome"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "color_scheme",
+      "fieldtype": "JSON",
+      "label": "Color Scheme"
+    },
+    {
+      "fieldname": "section_break_modules",
+      "fieldtype": "Section Break",
+      "label": "Modules"
+    },
+    {
+      "fieldname": "nav_items",
+      "fieldtype": "JSON",
+      "label": "Nav Items"
+    },
+    {
+      "fieldname": "visible_modules",
+      "fieldtype": "JSON",
+      "label": "Visible Modules"
+    },
+    {
+      "fieldname": "hidden_modules",
+      "fieldtype": "JSON",
+      "label": "Hidden Modules"
+    },
+    {
+      "fieldname": "section_break_fields",
+      "fieldtype": "Section Break",
+      "label": "Custom Fields"
+    },
+    {
+      "fieldname": "contact_fields",
+      "fieldtype": "JSON",
+      "label": "Contact Fields"
+    },
+    {
+      "fieldname": "lead_fields",
+      "fieldtype": "JSON",
+      "label": "Lead Fields"
+    },
+    {
+      "fieldname": "section_break_ui",
+      "fieldtype": "Section Break",
+      "label": "UI Configuration"
+    },
+    {
+      "fieldname": "stats_config",
+      "fieldtype": "JSON",
+      "label": "Stats Config"
+    },
+    {
+      "fieldname": "terminology",
+      "fieldtype": "JSON",
+      "label": "Terminology"
+    },
+    {
+      "fieldname": "fab_actions",
+      "fieldtype": "JSON",
+      "label": "FAB Actions"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-04-23 10:00:00",
+  "modified_by": "Administrator",
+  "module": "BoonXpress CRM",
+  "name": "Boon Vertical Template",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "read": 1,
+      "role": "System Manager",
+      "write": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "ASC",
+  "title_field": "display_name",
+  "track_changes": 1
+}

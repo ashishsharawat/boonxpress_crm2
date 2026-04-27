@@ -1,0 +1,187 @@
+{
+  "actions": [],
+  "autoname": "field:slug",
+  "creation": "2026-04-23 10:00:00",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "slug",
+    "business_name",
+    "owner_name",
+    "owner_email",
+    "owner_phone",
+    "column_break_1",
+    "vertical_type",
+    "status",
+    "billing_status",
+    "plan",
+    "section_break_site",
+    "site_url",
+    "api_key",
+    "api_secret",
+    "column_break_2",
+    "activated_at",
+    "last_login_at",
+    "admin_password",
+    "section_break_apps",
+    "apps",
+    "notes"
+  ],
+  "fields": [
+    {
+      "fieldname": "slug",
+      "fieldtype": "Data",
+      "label": "Slug",
+      "reqd": 1,
+      "unique": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "business_name",
+      "fieldtype": "Data",
+      "label": "Business Name",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "owner_name",
+      "fieldtype": "Data",
+      "label": "Owner Name"
+    },
+    {
+      "fieldname": "owner_email",
+      "fieldtype": "Data",
+      "label": "Owner Email",
+      "reqd": 1,
+      "options": "Email"
+    },
+    {
+      "fieldname": "owner_phone",
+      "fieldtype": "Data",
+      "label": "Owner Phone",
+      "options": "Phone"
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "vertical_type",
+      "fieldtype": "Link",
+      "label": "Vertical Type",
+      "options": "Boon Vertical Template",
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "\nProvisioning\nActive\nSuspended\nDeactivated\nFailed",
+      "default": "Provisioning",
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "billing_status",
+      "fieldtype": "Select",
+      "label": "Billing Status",
+      "options": "\nTrial\nActive\nPast Due\nCancelled",
+      "default": "Trial"
+    },
+    {
+      "fieldname": "plan",
+      "fieldtype": "Data",
+      "label": "Plan",
+      "default": "\u20b9999/mo"
+    },
+    {
+      "fieldname": "section_break_site",
+      "fieldtype": "Section Break",
+      "label": "Site Details"
+    },
+    {
+      "fieldname": "site_url",
+      "fieldtype": "Data",
+      "label": "Site URL",
+      "read_only": 1
+    },
+    {
+      "fieldname": "api_key",
+      "fieldtype": "Data",
+      "label": "API Key",
+      "hidden": 1
+    },
+    {
+      "fieldname": "api_secret",
+      "fieldtype": "Password",
+      "label": "API Secret",
+      "hidden": 1
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "activated_at",
+      "fieldtype": "Datetime",
+      "label": "Activated At",
+      "read_only": 1
+    },
+    {
+      "fieldname": "last_login_at",
+      "fieldtype": "Datetime",
+      "label": "Last Login At",
+      "read_only": 1
+    },
+    {
+      "fieldname": "admin_password",
+      "fieldtype": "Password",
+      "label": "Admin Password",
+      "hidden": 1
+    },
+    {
+      "fieldname": "section_break_apps",
+      "fieldtype": "Section Break",
+      "label": "Apps & Notes"
+    },
+    {
+      "fieldname": "apps",
+      "fieldtype": "Small Text",
+      "label": "Apps (JSON)"
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Text",
+      "label": "Notes"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-04-23 10:00:00",
+  "modified_by": "Administrator",
+  "module": "BoonXpress CRM",
+  "name": "Boon Tenant",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "title_field": "business_name",
+  "track_changes": 1
+}

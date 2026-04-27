@@ -1,0 +1,123 @@
+# BoonCRM Control Site — Docker Compose
+#
+# This stack runs the central control site (ctrl.enabble.com) where the React
+# admin panel manages tenants. It coexists with the existing enabble-crm-prod
+# stack and shares the press-mariadb database server.
+#
+# Deploy: docker compose -p booncrm-ctrl -f compose.yaml up -d
+# Logs:   docker compose -p booncrm-ctrl logs -f
+
+x-customizable-image: &customizable_image
+  image: ${CUSTOM_IMAGE}:${CUSTOM_TAG:-v1}
+  pull_policy: ${PULL_POLICY:-missing}
+
+x-depends-on-configurator: &depends_on_configurator
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
+
+x-backend-defaults: &backend_defaults
+  <<: [*depends_on_configurator, *customizable_image]
+  restart: unless-stopped
+  volumes:
+    - sites:/home/frappe/frappe-bench/sites
+    - assets:/home/frappe/frappe-bench/sites/assets
+    - logs:/home/frappe/frappe-bench/logs
+
+services:
+  configurator:
+    <<: *customizable_image
+    restart: "no"
+    entrypoint:
+      - bash
+      - -c
+    command:
+      - >
+        ls -1 apps > sites/apps.txt;
+        bench set-config -g db_host $$DB_HOST;
+        bench set-config -gp db_port $$DB_PORT;
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+    environment:
+      DB_HOST: ${DB_HOST:-press-mariadb}
+      DB_PORT: ${DB_PORT:-3306}
+      REDIS_CACHE: ${REDIS_CACHE:-redis-cache:6379}
+      REDIS_QUEUE: ${REDIS_QUEUE:-redis-queue:6379}
+      SOCKETIO_PORT: "9000"
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+      - assets:/home/frappe/frappe-bench/sites/assets
+
+  backend:
+    <<: *backend_defaults
+    environment:
+      - FRAPPE_SITE_NAME_HEADER=${FRAPPE_SITE_NAME_HEADER:-$$host}
+
+  frontend:
+    <<: [*depends_on_configurator, *customizable_image]
+    restart: unless-stopped
+    command: nginx-entrypoint.sh
+    environment:
+      BACKEND: backend:8000
+      SOCKETIO: websocket:9000
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-$$host}
+      UPSTREAM_REAL_IP_ADDRESS: ${UPSTREAM_REAL_IP_ADDRESS:-127.0.0.1}
+      UPSTREAM_REAL_IP_HEADER: ${UPSTREAM_REAL_IP_HEADER:-X-Forwarded-For}
+      UPSTREAM_REAL_IP_RECURSIVE: ${UPSTREAM_REAL_IP_RECURSIVE:-off}
+      PROXY_READ_TIMEOUT: ${PROXY_READ_TIMEOUT:-120}
+      CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-50m}
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+      - assets:/home/frappe/frappe-bench/sites/assets
+    ports:
+      - "127.0.0.1:8086:8080"
+    networks:
+      default: null
+      coolify: null
+
+  websocket:
+    <<: [*depends_on_configurator, *customizable_image]
+    restart: unless-stopped
+    command: node /home/frappe/frappe-bench/apps/frappe/socketio.js
+    environment:
+      - FRAPPE_SITE_NAME_HEADER=${FRAPPE_SITE_NAME_HEADER:-$$host}
+    volumes:
+      - sites:/home/frappe/frappe-bench/sites
+      - assets:/home/frappe/frappe-bench/sites/assets
+
+  queue-short:
+    <<: *backend_defaults
+    command: bench worker --queue short,default
+
+  queue-long:
+    <<: *backend_defaults
+    command: bench worker --queue long,default,short
+
+  scheduler:
+    <<: *backend_defaults
+    command: bench schedule
+
+  redis-cache:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-cache-data:/data
+
+  redis-queue:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-queue-data:/data
+
+volumes:
+  sites:
+  assets:
+  logs:
+  redis-cache-data:
+  redis-queue-data:
+
+networks:
+  coolify:
+    external: true

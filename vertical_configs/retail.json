@@ -1,0 +1,49 @@
+{
+  "vertical_type": "retail",
+  "display_name": "Retail & Craft",
+  "icon": "shopping-bag",
+  "color_scheme": {
+    "primary": "#F59E0B",
+    "primary_light": "#FCD34D",
+    "primary_bg": "#FFFBEB",
+    "primary_dark": "#B45309",
+    "accent": "#EC4899",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#FFFBEB"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Customers", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Enquiries", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "RetailHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "deals", "pipeline", "onboarding"],
+  "hidden_modules": ["appointments", "organizations", "call_logs", "data_import"],
+  "contact_fields": [
+    { "fieldname": "purchase_count", "label": "Purchases", "fieldtype": "Int" },
+    { "fieldname": "is_repeat_customer", "label": "Repeat Customer", "fieldtype": "Check" },
+    { "fieldname": "last_purchase_date", "label": "Last Purchase", "fieldtype": "Date" }
+  ],
+  "lead_fields": [
+    { "fieldname": "enquiry_type", "label": "Enquiry Type", "fieldtype": "Select", "options": "DM Enquiry\nWalk-in\nPhone\nWhatsApp\nReferral" }
+  ],
+  "stats_config": [
+    { "key": "pending_orders", "label": "Pending", "icon": "Package" },
+    { "key": "new_enquiries", "label": "Enquiries", "icon": "Target" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": {
+    "contact": "Customer",
+    "lead": "Enquiry",
+    "deal": "Order",
+    "organization": null
+  },
+  "fab_actions": [
+    { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" },
+    { "label": "New Order", "icon": "Package", "action": "create_deal" }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "vertical_type": "general",
+  "display_name": "General Business",
+  "icon": "briefcase",
+  "color_scheme": {
+    "primary": "#0EA5E9",
+    "primary_light": "#38BDF8",
+    "primary_bg": "#F0F9FF",
+    "primary_dark": "#0369A1",
+    "accent": "#10B981",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F0F9FF"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Contacts", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Leads", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "GeneralHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "deals", "pipeline", "onboarding"],
+  "hidden_modules": ["appointments", "call_logs", "data_import"],
+  "contact_fields": [],
+  "lead_fields": [],
+  "stats_config": [
+    { "key": "new_leads", "label": "New Leads", "icon": "Target" },
+    { "key": "open_deals", "label": "Open Deals", "icon": "TrendingUp" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": {
+    "contact": "Contact",
+    "lead": "Lead",
+    "deal": "Deal",
+    "organization": "Organization"
+  },
+  "fab_actions": [
+    { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" },
+    { "label": "New Deal", "icon": "TrendingUp", "action": "create_deal" }
+  ]
+}

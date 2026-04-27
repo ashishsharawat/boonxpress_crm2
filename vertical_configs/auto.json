@@ -1,0 +1,50 @@
+{
+  "vertical_type": "auto",
+  "display_name": "Used Car Dealer",
+  "icon": "car",
+  "color_scheme": {
+    "primary": "#10B981",
+    "primary_light": "#34D399",
+    "primary_bg": "#ECFDF5",
+    "primary_dark": "#065F46",
+    "accent": "#F59E0B",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#ECFDF5"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Customers", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Leads", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "AutoHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "deals", "pipeline", "onboarding"],
+  "hidden_modules": ["appointments", "organizations", "call_logs", "data_import"],
+  "contact_fields": [
+    { "fieldname": "vehicle_interest", "label": "Looking For", "fieldtype": "Data" },
+    { "fieldname": "budget_range", "label": "Budget Range", "fieldtype": "Select", "options": "Under 3L\n3-5L\n5-8L\n8-12L\n12-20L\nAbove 20L" },
+    { "fieldname": "fuel_preference", "label": "Fuel Preference", "fieldtype": "Select", "options": "Petrol\nDiesel\nCNG\nElectric\nHybrid\nNo Preference" }
+  ],
+  "lead_fields": [
+    { "fieldname": "vehicle_segment", "label": "Segment", "fieldtype": "Select", "options": "Hatchback\nSedan\nSUV\nMUV\nLuxury" },
+    { "fieldname": "heat_score", "label": "Heat Score", "fieldtype": "Select", "options": "Hot\nWarm\nCold" }
+  ],
+  "stats_config": [
+    { "key": "test_drives_today", "label": "Test Drives", "icon": "Car" },
+    { "key": "hot_leads", "label": "Hot Leads", "icon": "Flame" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": {
+    "contact": "Customer",
+    "lead": "Lead",
+    "deal": "Test Drive",
+    "organization": null
+  },
+  "fab_actions": [
+    { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" },
+    { "label": "Log Walk-in", "icon": "FootprintsIcon", "action": "create_walkin" }
+  ]
+}

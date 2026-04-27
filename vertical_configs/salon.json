@@ -1,0 +1,49 @@
+{
+  "vertical_type": "salon",
+  "display_name": "Salon & Beauty",
+  "icon": "scissors",
+  "color_scheme": {
+    "primary": "#EC4899",
+    "primary_light": "#F9A8D4",
+    "primary_bg": "#FDF2F8",
+    "primary_dark": "#BE185D",
+    "accent": "#10B981",
+    "text_primary": "#1E1B4B",
+    "text_secondary": "#6B7280",
+    "surface": "#FFFFFF",
+    "surface_alt": "#FDF2F8"
+  },
+  "nav_items": [
+    { "key": "home", "label": "Home", "icon": "Home", "route": "/" },
+    { "key": "clients", "label": "Clients", "icon": "Users", "route": "/clients" },
+    { "key": "leads", "label": "Leads", "icon": "Target", "route": "/leads" },
+    { "key": "chat", "label": "Chat", "icon": "MessageCircle", "route": "/chat" },
+    { "key": "settings", "label": "Settings", "icon": "Settings", "route": "/settings" }
+  ],
+  "home_component": "SalonHome",
+  "visible_modules": ["contacts", "leads", "whatsapp", "appointments", "onboarding"],
+  "hidden_modules": ["deals", "organizations", "call_logs", "pipeline_board", "data_import"],
+  "contact_fields": [
+    { "fieldname": "preferred_services", "label": "Preferred Services", "fieldtype": "MultiSelect", "options": "Haircut\nColoring\nFacial\nManicure\nPedicure\nWaxing\nThreading\nBridal" },
+    { "fieldname": "last_visit_date", "label": "Last Visit", "fieldtype": "Date" },
+    { "fieldname": "birthday", "label": "Birthday", "fieldtype": "Date" }
+  ],
+  "lead_fields": [
+    { "fieldname": "interested_service", "label": "Interested In", "fieldtype": "Select", "options": "Haircut\nColoring\nBridal\nFacial\nOther" }
+  ],
+  "stats_config": [
+    { "key": "appointments_today", "label": "Today", "icon": "Calendar" },
+    { "key": "new_leads", "label": "New Leads", "icon": "Target" },
+    { "key": "wa_pending", "label": "WA Pending", "icon": "MessageCircle" }
+  ],
+  "terminology": {
+    "contact": "Client",
+    "lead": "Enquiry",
+    "deal": null,
+    "organization": null
+  },
+  "fab_actions": [
+    { "label": "New Appointment", "icon": "CalendarPlus", "action": "create_appointment" },
+    { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" }
+  ]
+}

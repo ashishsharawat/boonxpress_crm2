@@ -1,0 +1,53 @@
+{
+  "actions": [],
+  "creation": "2026-04-23 10:00:00",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "vertical_type",
+    "business_name",
+    "config_json",
+    "last_synced"
+  ],
+  "fields": [
+    {
+      "fieldname": "vertical_type",
+      "fieldtype": "Data",
+      "label": "Vertical Type"
+    },
+    {
+      "fieldname": "business_name",
+      "fieldtype": "Data",
+      "label": "Business Name"
+    },
+    {
+      "fieldname": "config_json",
+      "fieldtype": "JSON",
+      "label": "Config JSON"
+    },
+    {
+      "fieldname": "last_synced",
+      "fieldtype": "Datetime",
+      "label": "Last Synced",
+      "read_only": 1
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "issingle": 1,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-04-23 10:00:00",
+  "modified_by": "Administrator",
+  "module": "BoonXpress CRM",
+  "name": "Boon Tenant Config",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "read": 1,
+      "role": "System Manager",
+      "write": 1
+    }
+  ],
+  "track_changes": 0
+}
