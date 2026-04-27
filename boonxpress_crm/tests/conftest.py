@@ -23,15 +23,21 @@ def _unique_suffix():
 
 
 def make_lead(**overrides):
-    """Insert a CRM Lead with collision-safe defaults; return the doc."""
+    """Insert a CRM Lead with collision-safe defaults; return the doc.
+
+    Phone uses a digits-only suffix derived from the hex hash so Frappe's
+    phone validator accepts it. Default status is "New" — Frappe CRM's
+    seeded initial Lead Status (no "Open" exists in the default install).
+    """
     suffix = _unique_suffix()
+    digit_suffix = f"{int(suffix, 16) % 10_000_000:07d}"
     defaults = {
         "doctype": "CRM Lead",
         "first_name": f"{BOONTEST_PREFIX}_{suffix}",
         "last_name": "User",
         "email": f"{BOONTEST_PREFIX}+{suffix}@example.com",
-        "mobile_no": f"+91999{suffix[:7]}",
-        "status": "Open",
+        "mobile_no": f"+91999{digit_suffix}",
+        "status": "New",
     }
     defaults.update(overrides)
     doc = frappe.get_doc(defaults)

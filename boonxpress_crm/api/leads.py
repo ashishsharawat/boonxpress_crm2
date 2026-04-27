@@ -46,9 +46,11 @@ def get_closed(page=0, page_size=20):
     # Pull a generous window from each source, merge, sort, paginate.
     fetch_n = (page + 1) * page_size + page_size
 
+    # Frappe CRM Lead has no "Lost" status; the lost-equivalent statuses
+    # are "Junk" and "Unqualified" (per the seeded CRM Lead Status records).
     leads = frappe.get_all(
         "CRM Lead",
-        filters={"status": ["in", ["Lost", "Junk"]]},
+        filters={"status": ["in", ["Junk", "Unqualified"]]},
         fields=_LEAD_FIELDS,
         order_by="modified desc",
         limit_page_length=fetch_n,
