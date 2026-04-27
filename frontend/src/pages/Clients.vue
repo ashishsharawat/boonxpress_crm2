@@ -1,79 +1,76 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="px-4 pt-3 pb-2">
-      <SearchBar v-model="search" :placeholder="`Search ${term('contact', 'Contacts')}...`" />
+      <SearchBar v-model="search" :placeholder="`Search ${term('contact', 'clients')}...`" />
     </div>
+    <SegmentPills v-model="activeSegment" :segments="pills" />
     <InfiniteList
-      :items="contacts"
-      :loading="loading"
-      :has-more="hasMore"
-      :empty-title="`No ${term('contact', 'contacts')} yet`"
-      :empty-message="`Add your first ${term('contact', 'contact')} to get started.`"
+      :items="currentItems"
+      :loading="currentLoading"
+      :has-more="currentHasMore"
+      :empty-title="`No ${term('contact', 'clients')} yet`"
+      empty-message="Customers will appear here as deals close."
       @load-more="loadMore"
     >
       <template #default="{ item }">
-        <ContactCard :contact="item" @tap="openContact" />
+        <ClientCard :client="item" @tap="open" />
       </template>
     </InfiniteList>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SearchBar from '@/components/common/SearchBar.vue'
+import SegmentPills from '@/components/common/SegmentPills.vue'
 import InfiniteList from '@/components/lists/InfiniteList.vue'
-import ContactCard from '@/components/cards/ContactCard.vue'
+import ClientCard from '@/components/cards/ClientCard.vue'
+import { useClientsStore } from '@/stores/clientsStore'
 import { useVertical } from '@/composables/useVertical'
-import { getList } from '@/utils/api'
-import { PAGE_SIZE } from '@/utils/constants'
 
 const router = useRouter()
-const { term } = useVertical()
+const clientsStore = useClientsStore()
+const { config, term } = useVertical()
 
-const contacts = ref([])
-const loading = ref(false)
-const hasMore = ref(true)
 const search = ref('')
-let start = 0
+const activeSegment = ref('all')
 
-async function fetchContacts(reset = false) {
-  if (loading.value) return
-  loading.value = true
-  if (reset) {
-    start = 0
-    contacts.value = []
-    hasMore.value = true
-  }
-  try {
-    const filters = search.value
-      ? [['full_name', 'like', `%${search.value}%`]]
-      : []
-    const data = await getList('Contact', {
-      fields: ['name', 'first_name', 'last_name', 'full_name', 'mobile_no', 'email_id', 'modified'],
-      filters,
-      orderBy: 'modified desc',
-      pageLength: PAGE_SIZE,
-      start,
-    })
-    contacts.value = reset ? data : [...contacts.value, ...data]
-    hasMore.value = data.length === PAGE_SIZE
-    start += data.length
-  } catch (err) {
-    console.error('Failed to load contacts:', err)
-  } finally {
-    loading.value = false
-  }
+const segmentDefs = computed(() => config.value?.clients_segments || [
+  { key: 'all', label: 'All', filter: null },
+])
+
+const pills = computed(() =>
+  segmentDefs.value.map((s) => ({
+    key: s.key,
+    label: s.label,
+    count: (clientsStore.segments[s.key]?.items || []).length || null,
+  })),
+)
+
+const activeFilter = computed(() => segmentDefs.value.find((s) => s.key === activeSegment.value)?.filter)
+
+const currentItems = computed(() => clientsStore.items(activeSegment.value))
+const currentLoading = computed(() => (clientsStore.segments[activeSegment.value] || {}).loading)
+const currentHasMore = computed(() => (clientsStore.segments[activeSegment.value] || {}).hasMore !== false)
+
+async function load() {
+  await clientsStore.loadSegment(activeSegment.value, activeFilter.value, { reset: true, search: search.value })
 }
 
-function loadMore() {
-  fetchContacts(false)
+async function loadMore() {
+  await clientsStore.loadSegment(activeSegment.value, activeFilter.value, { reset: false, search: search.value })
 }
 
-function openContact(contact) {
-  router.push({ name: 'ClientDetail', params: { id: contact.name } })
+function open(client) {
+  router.push(`/person/${encodeURIComponent(client.name)}`)
 }
 
-watch(search, () => fetchContacts(true))
-onMounted(() => fetchContacts(true))
+let searchTimer
+watch(search, () => {
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(load, 300)
+})
+watch(activeSegment, load)
+onMounted(load)
 </script>
