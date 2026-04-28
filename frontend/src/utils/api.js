@@ -105,3 +105,21 @@ export async function updateDoc(doctype, name, values) {
   const data = await response.json()
   return data.data
 }
+
+/**
+ * Set a single field on a doc via Frappe's set_value RPC.
+ */
+export async function setValue(doctype, name, fieldname, value) {
+  return call('frappe.client.set_value', { doctype, name, fieldname, value })
+}
+
+/**
+ * Soft-delete a record. CRM Lead/Deal use status='Cancelled'; Contact uses archived flag.
+ * Never hard-deletes — preserves history.
+ */
+export async function softDelete(doctype, name) {
+  if (doctype === 'Contact') {
+    return setValue(doctype, name, 'archived', 1)
+  }
+  return setValue(doctype, name, 'status', 'Cancelled')
+}

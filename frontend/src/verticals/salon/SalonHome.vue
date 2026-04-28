@@ -1,99 +1,177 @@
 <template>
-  <div class="h-full overflow-y-auto">
-    <!-- Quick Stats -->
+  <div class="h-full overflow-y-auto pb-24">
+    <!-- Greeting + business name -->
+    <div class="px-4 pt-3 pb-2">
+      <h1 class="text-base font-bold text-boon-text-primary leading-tight">
+        {{ greeting }}<span v-if="firstName">, {{ firstName }}</span>
+      </h1>
+      <p class="text-xs text-boon-text-secondary mt-0.5">
+        {{ businessName }} · {{ todayLabel }}
+      </p>
+    </div>
+
+    <!-- Quick stats — driven by vertical_config.stats_config -->
     <QuickStatsBar :stats="statsData" />
 
     <!-- Today's Appointments -->
     <div class="px-4 py-2">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-sm font-semibold text-boon-text-primary font-heading">Today's Appointments</h2>
-        <span class="text-xs text-boon-text-secondary">{{ todayLabel }}</span>
+        <button
+          v-if="!loading && appointments.length"
+          class="text-xs font-medium text-boon-primary"
+          @click="openCreateAppointment"
+        >+ New</button>
       </div>
 
-      <!-- Loading -->
       <div v-if="loading" class="space-y-2">
-        <div v-for="i in 4" :key="i" class="bg-boon-surface rounded-xl px-3 py-3 flex items-center gap-3">
-          <div class="w-12 h-8 skeleton rounded" />
-          <div class="flex-1 space-y-2">
-            <div class="h-3.5 w-3/4 skeleton rounded" />
-            <div class="h-3 w-1/2 skeleton rounded" />
-          </div>
-        </div>
+        <SkeletonCard v-for="i in 4" :key="i" />
       </div>
 
-      <!-- Appointment list -->
       <div v-else-if="appointments.length" class="space-y-2">
         <AppointmentCard
           v-for="apt in appointments"
           :key="apt.name"
           :appointment="apt"
-          @tap="openAppointment"
+          @tap="openEditAppointment"
         />
       </div>
 
-      <!-- Empty state -->
-      <div v-else class="text-center py-8">
-        <Calendar :size="40" class="text-boon-primary-light mx-auto mb-2" />
-        <p class="text-sm font-medium text-boon-text-primary">No appointments today</p>
-        <p class="text-xs text-boon-text-secondary mt-1">Tap + to book a new appointment</p>
+      <EmptyState
+        v-else
+        :title="`No appointments ${todayLabel.split(',')[0].toLowerCase()}`"
+        message="Tap + to book one or use the FAB below."
+      />
+    </div>
+
+    <!-- Recent Activity preview (Phase 1's killer feature on the home screen) -->
+    <div v-if="recentActivity.length" class="px-4 py-2">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-sm font-semibold text-boon-text-primary font-heading">Recent activity</h2>
+      </div>
+      <div class="bg-boon-surface rounded-xl">
+        <div
+          v-for="ev in recentActivity"
+          :key="ev.id"
+          class="px-3 py-2 border-b border-gray-100 last:border-b-0 flex justify-between gap-2"
+        >
+          <span class="text-xs text-boon-text-primary truncate">{{ ev.summary }}</span>
+          <span class="text-[10px] text-boon-text-secondary shrink-0">{{ formatRelative(ev.timestamp) }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- Book Appointment Sheet -->
-    <BookAppointment v-model="showBooking" @created="onAppointmentCreated" />
+    <!-- Sheets -->
+    <BookAppointment
+      v-model="showAppointmentSheet"
+      :appointment="editingAppointment"
+      @saved="onAppointmentSaved"
+    />
+    <NewEnquirySheet
+      v-model="showEnquirySheet"
+      @saved="onEnquirySaved"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Calendar } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
 import QuickStatsBar from '@/components/stats/QuickStatsBar.vue'
 import AppointmentCard from '@/components/cards/AppointmentCard.vue'
+import SkeletonCard from '@/components/lists/SkeletonCard.vue'
+import EmptyState from '@/components/lists/EmptyState.vue'
 import BookAppointment from './BookAppointment.vue'
+import NewEnquirySheet from './NewEnquirySheet.vue'
+import { useVertical } from '@/composables/useVertical'
+import { useSessionStore } from '@/stores/session'
+import { onFabAction } from '@/composables/useFabBus'
 import { call } from '@/utils/api'
+import { formatRelative } from '@/utils/formatters'
+
+const router = useRouter()
+const { config } = useVertical()
+const session = useSessionStore()
 
 const loading = ref(true)
 const appointments = ref([])
-const statsData = ref([])
-const showBooking = ref(false)
+const stats = ref({})
+const recentActivity = ref([])
+const showAppointmentSheet = ref(false)
+const showEnquirySheet = ref(false)
+const editingAppointment = ref(null)
 
-const todayLabel = computed(() => {
-  return new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'short', day: 'numeric' })
+const businessName = computed(() => config.value?.business_name || config.value?.display_name || 'BoonCRM')
+
+const firstName = computed(() => (session.fullName || '').split(' ')[0] || '')
+
+const todayLabel = computed(() => new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'short', day: 'numeric' }))
+
+const greeting = computed(() => {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 17) return 'Good afternoon'
+  return 'Good evening'
+})
+
+const statsData = computed(() => {
+  const cfg = config.value?.stats_config || []
+  return cfg.map((s) => ({
+    key: s.key,
+    label: s.label,
+    icon: s.icon,
+    value: stats.value?.[s.key] ?? 0,
+  }))
+})
+
+// Subscribe to the global FAB bus so the layout-level FAB can launch
+// salon-specific create flows. Action keys come from vertical_config.fab_actions.
+onFabAction((action) => {
+  if (action === 'create_appointment') openCreateAppointment()
+  else if (action === 'create_lead') showEnquirySheet.value = true
 })
 
 async function loadData() {
   loading.value = true
   try {
-    const [aptsData, stats] = await Promise.all([
-      call('boonxpress_crm.api.appointments.get_today'),
-      call('boonxpress_crm.api.stats.get_quick_stats'),
+    const [aptsData, statsData, activityData] = await Promise.all([
+      call('boonxpress_crm.api.appointments.get_today').catch(() => []),
+      call('boonxpress_crm.api.stats.get_quick_stats').catch(() => ({})),
+      call('boonxpress_crm.api.stats.get_recent_activity', { limit: 3 }).catch(() => []),
     ])
     appointments.value = aptsData || []
-    statsData.value = [
-      { key: 'appointments_today', label: 'Today', icon: 'Calendar', value: stats?.appointments_today ?? 0 },
-      { key: 'new_leads', label: 'New Leads', icon: 'Target', value: stats?.new_leads ?? 0 },
-      { key: 'wa_pending', label: 'WA Pending', icon: 'MessageCircle', value: stats?.wa_pending ?? 0 },
-    ]
-  } catch (err) {
-    console.error('Failed to load salon home data:', err)
-    // Show zeroes on error
-    statsData.value = [
-      { key: 'appointments_today', label: 'Today', icon: 'Calendar', value: 0 },
-      { key: 'new_leads', label: 'New Leads', icon: 'Target', value: 0 },
-      { key: 'wa_pending', label: 'WA Pending', icon: 'MessageCircle', value: 0 },
-    ]
+    stats.value = statsData || {}
+    recentActivity.value = activityData || []
   } finally {
     loading.value = false
   }
 }
 
-function openAppointment(apt) {
-  // Future: open appointment detail bottom sheet
+function openCreateAppointment() {
+  editingAppointment.value = null
+  showAppointmentSheet.value = true
 }
 
-function onAppointmentCreated() {
-  showBooking.value = false
+function openEditAppointment(apt) {
+  // Two-paths: tap = edit appointment in-place; long-press would open person.
+  // For phase-3 we default to the edit sheet so the salon owner can fix
+  // status (Confirmed/Done/Cancelled) without leaving the home screen.
+  editingAppointment.value = apt
+  showAppointmentSheet.value = true
+}
+
+function onAppointmentSaved() {
+  editingAppointment.value = null
   loadData()
+}
+
+function onEnquirySaved(lead) {
+  // Surface the new lead by routing to its PersonDetail screen.
+  if (lead?.name) {
+    router.push(`/person/${encodeURIComponent(lead.name)}`)
+  } else {
+    loadData()
+  }
 }
 
 onMounted(loadData)

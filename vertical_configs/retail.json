@@ -45,5 +45,24 @@
   "fab_actions": [
     { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" },
     { "label": "New Order", "icon": "Package", "action": "create_deal" }
-  ]
+  ],
+  "conversion_mode": "manual",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "repeat", "label": "Repeat buyers", "filter": { "visits_gte": 2 } },
+    { "key": "vip", "label": "VIP", "filter": { "lifetime_value_gte": 25000 } }
+  ],
+  "deal_stages": ["Qualification", "Quote", "Negotiation"],
+  "person_primary_action": { "label": "Log Sale", "icon": "ShoppingBag", "action": "create_deal" },
+  "profile_fields": [
+    { "key": "preferred_categories", "label": "Preferred categories", "type": "tags" },
+    { "key": "size_preferences", "label": "Size preferences", "type": "text" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note"],
+  "appointment_to_deal_status_map": {}
 }

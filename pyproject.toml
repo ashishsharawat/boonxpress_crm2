@@ -1,0 +1,10 @@
+[project]
+name = "boonxpress_crm"
+version = "0.0.1"
+description = "BoonCRM mobile-first multi-tenant CRM with vertical UI skins"
+authors = [{ name = "Boon Xpress" }]
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"

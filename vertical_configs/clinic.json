@@ -46,5 +46,25 @@
   "fab_actions": [
     { "label": "New Consultation", "icon": "CalendarPlus", "action": "create_appointment" },
     { "label": "New Lead", "icon": "UserPlus", "action": "create_lead" }
-  ]
+  ],
+  "conversion_mode": "auto",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "active", "label": "Active patients", "filter": { "days_since_last_visit_gt": -1, "days_since_last_visit_lte": 90 } },
+    { "key": "lapsed", "label": "Lapsed", "filter": { "days_since_last_visit_gt": 90 } }
+  ],
+  "deal_stages": ["Qualification", "Demo", "Proposal", "Negotiation"],
+  "person_primary_action": { "label": "Book Appointment", "icon": "CalendarPlus", "action": "create_appointment" },
+  "profile_fields": [
+    { "key": "treatments", "label": "Treatments", "type": "tags" },
+    { "key": "date_of_birth", "label": "Date of birth", "type": "date" },
+    { "key": "medical_notes", "label": "Medical notes", "type": "textarea" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_to_deal_status_map": { "Booked": "Negotiation", "Showed Up": "Won", "Completed": "Won", "No Show": "Lost", "Cancelled": "Lost" }
 }

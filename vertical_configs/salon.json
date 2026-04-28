@@ -45,5 +45,32 @@
   "fab_actions": [
     { "label": "New Appointment", "icon": "CalendarPlus", "action": "create_appointment" },
     { "label": "New Enquiry", "icon": "UserPlus", "action": "create_lead" }
-  ]
+  ],
+  "conversion_mode": "auto",
+  "leads_segments": [
+    { "key": "new", "label": "New", "filter": { "doctype": "CRM Lead", "status_in": ["Open", "Replied"] } },
+    { "key": "pipeline", "label": "Pipeline", "filter": { "doctype": "CRM Deal", "status_not_in": ["Won", "Lost"] } },
+    { "key": "closed", "label": "Closed", "filter": { "doctype": "*", "status_in": ["Lost"] } }
+  ],
+  "clients_segments": [
+    { "key": "all", "label": "All", "filter": null },
+    { "key": "repeat", "label": "Repeat", "filter": { "visits_gte": 2 } },
+    { "key": "lapsed", "label": "Lapsed", "filter": { "days_since_last_visit_gt": 60 } }
+  ],
+  "deal_stages": ["Qualification", "Demo", "Proposal", "Negotiation"],
+  "person_primary_action": { "label": "Book Appointment", "icon": "CalendarPlus", "action": "create_appointment" },
+  "profile_fields": [
+    { "key": "preferred_services", "label": "Preferred services", "type": "tags" },
+    { "key": "birthday", "label": "Birthday", "type": "date" },
+    { "key": "allergies", "label": "Allergies / notes", "type": "textarea" }
+  ],
+  "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_services": ["Haircut", "Coloring", "Facial", "Manicure", "Pedicure", "Waxing", "Threading", "Bridal Package"],
+  "appointment_to_deal_status_map": {
+    "Booked": "Negotiation",
+    "Showed Up": "Won",
+    "Completed": "Won",
+    "No Show": "Lost",
+    "Cancelled": "Lost"
+  }
 }

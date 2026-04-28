@@ -1,22 +1,27 @@
-{%- extends "templates/web.html" -%}
-
-{%- block title -%}{{ business_name }} - BoonCRM{%- endblock -%}
-
-{%- block head_include -%}
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#6366F1" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<link rel="stylesheet" href="/assets/boonxpress_crm/frontend/assets/index.css" />
-{%- endblock -%}
-
-{%- block page_content -%}
-<div id="booncrm-app"></div>
-<script>
-  window.csrf_token = "{{ csrf_token }}";
-  window.__booncrm_config__ = {{ booncrm_config | safe }};
-</script>
-<script type="module" src="/assets/boonxpress_crm/frontend/assets/index.js"></script>
-{%- endblock -%}
-
-{%- block footer -%}{%- endblock -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#6366F1" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>{{ business_name }} - BoonCRM</title>
+  {%- if index_css -%}
+  <link rel="stylesheet" href="{{ index_css }}" />
+  {%- endif -%}
+</head>
+<body>
+  <div id="booncrm-app"></div>
+  <script id="boon-csrf" type="text/plain">{{ csrf_token }}</script>
+  <script id="boon-config" type="application/json">{{ booncrm_config }}</script>
+  <script id="boon-user" type="application/json">{{ booncrm_user }}</script>
+  <script>
+    window.csrf_token = document.getElementById('boon-csrf').textContent;
+    window.__booncrm_config__ = JSON.parse(document.getElementById('boon-config').textContent);
+    window.__booncrm_user__ = JSON.parse(document.getElementById('boon-user').textContent);
+  </script>
+  <script type="module" src="{{ index_js }}"></script>
+</body>
+</html>

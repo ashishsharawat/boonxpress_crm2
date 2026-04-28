@@ -24,3 +24,11 @@ scheduler_events = {
         "boonxpress_crm.api.appointments.send_appointment_reminders",
     ],
 }
+
+# After every `bench migrate`, refresh the cached vertical config on this
+# site from the latest JSON shipped in vertical_configs/. Existing tenants
+# automatically pick up new schema keys (conversion_mode, leads_segments,
+# profile_fields, etc.) without manual UI edits.
+after_migrate = [
+    "boonxpress_crm.api.vertical.refresh_config_from_disk",
+]
