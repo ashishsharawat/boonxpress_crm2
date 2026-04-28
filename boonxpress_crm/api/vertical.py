@@ -75,3 +75,50 @@ def set_config(config_json=None, vertical_type=None, business_name=None):
     frappe.db.commit()
 
     return {"status": "ok", "vertical_type": config_doc.vertical_type}
+
+
+def refresh_config_from_disk():
+    """Re-read `vertical_configs/<vertical_type>.json` and overwrite
+    Boon Tenant Config.config_json on this site.
+
+    Called by the after_migrate hook so each `bench migrate` picks up
+    schema additions (new keys like conversion_mode, leads_segments,
+    profile_fields, etc.) without manual UI edits.
+
+    Existing tenants previously frozen on the JSON snapshot from their
+    initial provisioning automatically get the latest schema after the
+    next deploy + migrate cycle.
+    """
+    if not frappe.db.exists("DocType", "Boon Tenant Config"):
+        return
+
+    try:
+        config_doc = frappe.get_single("Boon Tenant Config")
+    except Exception:
+        return
+
+    vertical_type = (
+        config_doc.vertical_type
+        or frappe.conf.get("vertical_type")
+        or "general"
+    )
+
+    config_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "..",
+        "vertical_configs",
+        f"{vertical_type}.json",
+    )
+    config_path = os.path.abspath(config_path)
+
+    if not os.path.exists(config_path):
+        # Vertical config file missing — leave config_json untouched
+        return
+
+    with open(config_path) as f:
+        fresh_config = json.load(f)
+
+    config_doc.config_json = json.dumps(fresh_config)
+    config_doc.last_synced = frappe.utils.now()
+    config_doc.save(ignore_permissions=True)
+    frappe.db.commit()
