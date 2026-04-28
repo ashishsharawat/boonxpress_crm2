@@ -88,14 +88,17 @@ def refresh_config_from_disk():
     Existing tenants previously frozen on the JSON snapshot from their
     initial provisioning automatically get the latest schema after the
     next deploy + migrate cycle.
-    """
-    if not frappe.db.exists("DocType", "Boon Tenant Config"):
-        return
 
-    try:
-        config_doc = frappe.get_single("Boon Tenant Config")
-    except Exception:
-        return
+    Returns a dict describing what happened, useful when called via
+    `bench execute` for debugging.
+    """
+    log = frappe.logger("boonxpress_crm")
+
+    if not frappe.db.exists("DocType", "Boon Tenant Config"):
+        log.info("refresh_config_from_disk: Boon Tenant Config doctype not present; skip")
+        return {"status": "skipped", "reason": "doctype_missing"}
+
+    config_doc = frappe.get_single("Boon Tenant Config")
 
     vertical_type = (
         config_doc.vertical_type
@@ -103,17 +106,17 @@ def refresh_config_from_disk():
         or "general"
     )
 
-    config_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "..",
-        "vertical_configs",
-        f"{vertical_type}.json",
-    )
-    config_path = os.path.abspath(config_path)
+    # Path resolution: __file__ is at apps/boonxpress_crm/boonxpress_crm/api/vertical.py
+    # vertical_configs/ lives at apps/boonxpress_crm/vertical_configs/ (one level above
+    # the Python package). Walk up two dirs from this file's parent.
+    api_dir = os.path.dirname(os.path.abspath(__file__))            # .../boonxpress_crm/api
+    pkg_dir = os.path.dirname(api_dir)                              # .../boonxpress_crm
+    app_root = os.path.dirname(pkg_dir)                             # apps/boonxpress_crm
+    config_path = os.path.join(app_root, "vertical_configs", f"{vertical_type}.json")
 
     if not os.path.exists(config_path):
-        # Vertical config file missing — leave config_json untouched
-        return
+        log.warning(f"refresh_config_from_disk: config file not found at {config_path}")
+        return {"status": "skipped", "reason": "file_missing", "path": config_path}
 
     with open(config_path) as f:
         fresh_config = json.load(f)
@@ -122,3 +125,11 @@ def refresh_config_from_disk():
     config_doc.last_synced = frappe.utils.now()
     config_doc.save(ignore_permissions=True)
     frappe.db.commit()
+
+    log.info(f"refresh_config_from_disk: refreshed {vertical_type} from {config_path}")
+    return {
+        "status": "refreshed",
+        "vertical_type": vertical_type,
+        "path": config_path,
+        "keys": sorted(fresh_config.keys()),
+    }
