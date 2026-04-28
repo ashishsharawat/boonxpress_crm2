@@ -19,6 +19,9 @@ const componentMap = {
   ClinicHome: () => import('@/verticals/clinic/ClinicHome.vue'),
   AutoHome: () => import('@/verticals/auto/AutoHome.vue'),
   RetailHome: () => import('@/verticals/retail/RetailHome.vue'),
+  MedSpaHome: () => import('@/verticals/medspa/MedSpaHome.vue'),
+  UsedCarHome: () => import('@/verticals/usedcar/UsedCarHome.vue'),
+  CourseHome: () => import('@/verticals/course/CourseHome.vue'),
 }
 
 onMounted(async () => {

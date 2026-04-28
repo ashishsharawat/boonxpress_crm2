@@ -85,6 +85,7 @@ import { ref, computed, watch } from 'vue'
 import BottomSheet from '@/components/common/BottomSheet.vue'
 import SearchBar from '@/components/common/SearchBar.vue'
 import TouchButton from '@/components/common/TouchButton.vue'
+import { useVertical } from '@/composables/useVertical'
 import { getList, createDoc, call, setValue } from '@/utils/api'
 
 const props = defineProps({
@@ -121,7 +122,12 @@ const status = ref('Pending')
 const saving = ref(false)
 const error = ref('')
 
-const services = ['Haircut', 'Coloring', 'Facial', 'Manicure', 'Pedicure', 'Waxing', 'Threading', 'Bridal']
+const { config } = useVertical()
+
+// Services come from vertical_config.appointment_services. Salon defaults preserved
+// as fallback for backward compat with sites whose config_json hasn't been refreshed.
+const SALON_FALLBACK = ['Haircut', 'Coloring', 'Facial', 'Manicure', 'Pedicure', 'Waxing', 'Threading', 'Bridal']
+const services = computed(() => config.value?.appointment_services || SALON_FALLBACK)
 const statusOptions = ['Pending', 'Confirmed', 'Done', 'Cancelled']
 
 const timeOptions = Array.from({ length: 24 }, (_, i) => {

@@ -94,7 +94,9 @@ const note = ref('')
 const saving = ref(false)
 const error = ref('')
 
-const sourceOptions = ['Walk-in', 'WhatsApp', 'Phone Call', 'Instagram', 'Referral', 'Website', 'Other']
+// Source options can be overridden per-vertical; defaults cover common channels.
+const SOURCE_FALLBACK = ['Walk-in', 'WhatsApp', 'Phone Call', 'Instagram', 'Referral', 'Website', 'Other']
+const sourceOptions = SOURCE_FALLBACK
 
 const canSubmit = computed(() => firstName.value.trim() && (mobileNo.value.trim() || email.value.trim()))
 

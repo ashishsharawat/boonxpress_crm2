@@ -53,5 +53,6 @@
     { "key": "medical_notes", "label": "Medical notes", "type": "textarea" }
   ],
   "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_services": ["Botox", "HydraFacial", "Laser Hair Removal", "PRP", "Chemical Peel", "Microdermabrasion", "Dermal Filler", "IV Therapy", "Skin Consultation"],
   "appointment_to_deal_status_map": { "Booked": "Booked", "Completed": "Won", "No Show": "Lost", "Cancelled": "Lost" }
 }

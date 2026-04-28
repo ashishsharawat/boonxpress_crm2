@@ -65,6 +65,7 @@
     { "key": "allergies", "label": "Allergies / notes", "type": "textarea" }
   ],
   "activity_event_types": ["whatsapp", "call", "stage", "note", "appointment"],
+  "appointment_services": ["Haircut", "Coloring", "Facial", "Manicure", "Pedicure", "Waxing", "Threading", "Bridal Package"],
   "appointment_to_deal_status_map": {
     "Booked": "Negotiation",
     "Showed Up": "Won",
