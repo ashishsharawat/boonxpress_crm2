@@ -37,6 +37,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useVertical } from '@/composables/useVertical'
+import { emitFabAction } from '@/composables/useFabBus'
 import {
   Plus, CalendarPlus, UserPlus, TrendingUp, Package, Footprints
 } from 'lucide-vue-next'
@@ -65,7 +66,10 @@ function handleFabClick() {
 
 function handleAction(action) {
   expanded.value = false
+  // Local emit for direct parent listeners + global bus for vertical homes
+  // mounted under <Home>/<router-view> that don't have a direct prop chain.
   emit('action', action.action)
+  emitFabAction(action.action)
 }
 </script>
 
