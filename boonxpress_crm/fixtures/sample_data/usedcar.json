@@ -1,0 +1,32 @@
+{
+  "vertical_type": "usedcar",
+  "records": [
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Rahul",
+      "last_name": "Verma",
+      "mobile_no": "+919876520001",
+      "email": "rahul.demo@example.com",
+      "source": "Google Ads",
+      "status": "New"
+    },
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Vikram",
+      "last_name": "Singh",
+      "mobile_no": "+919876520002",
+      "email": "vikram.demo@example.com",
+      "source": "Walk-in",
+      "status": "Contacted"
+    },
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Karan",
+      "last_name": "Gupta",
+      "mobile_no": "+919876520003",
+      "email": "karan.demo@example.com",
+      "source": "Facebook Ads",
+      "status": "Nurture"
+    }
+  ]
+}

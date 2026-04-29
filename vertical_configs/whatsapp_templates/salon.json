@@ -1,0 +1,38 @@
+{
+  "vertical_type": "salon",
+  "templates": {
+    "welcome": {
+      "meta_template_name": "boon_salon_welcome",
+      "language_code": "en",
+      "preview": "Hi {name}! Thanks for reaching out to us. We've received your enquiry — one of our stylists will get back to you within 30 minutes. Reply STOP to opt out.",
+      "body_params": [
+        { "key": "name", "default": "there" }
+      ]
+    },
+    "appointment_reminder": {
+      "meta_template_name": "boon_salon_appointment_reminder",
+      "language_code": "en",
+      "preview": "Reminder: your {service} appointment is tomorrow at {time}. Reply YES to confirm or RESCHEDULE to change.",
+      "body_params": [
+        { "key": "service", "default": "appointment" },
+        { "key": "time", "default": "the scheduled time" }
+      ]
+    },
+    "re_engagement": {
+      "meta_template_name": "boon_salon_re_engagement",
+      "language_code": "en",
+      "preview": "Hi {name}! It's been a while since your last visit. Book your next session in the next 7 days and get 10% off — just reply BOOK.",
+      "body_params": [
+        { "key": "name", "default": "" }
+      ]
+    },
+    "consent_request": {
+      "meta_template_name": "boon_salon_consent",
+      "language_code": "en",
+      "preview": "Please review and sign your service consent form: {link}",
+      "body_params": [
+        { "key": "link", "default": "" }
+      ]
+    }
+  }
+}
