@@ -16,6 +16,16 @@ doc_events = {
         "after_insert": "boonxpress_crm.api.provisioning.on_tenant_created",
         "on_update": "boonxpress_crm.api.sync.on_tenant_updated",
     },
+    # 5-user cap (PRD §3.3 — User Management 5-user cap)
+    "User": {
+        "before_insert": "boonxpress_crm.api.billing.enforce_user_cap",
+    },
+    # Auto-send vertical-specific welcome WhatsApp on lead creation.
+    # Falls back to logging a Communication entry if frappe_whatsapp
+    # isn't installed yet — safe to enable before WABA verification.
+    "CRM Lead": {
+        "after_insert": "boonxpress_crm.api.whatsapp_send.on_lead_after_insert",
+    },
 }
 
 # Scheduler Events
@@ -32,3 +42,8 @@ scheduler_events = {
 after_migrate = [
     "boonxpress_crm.api.vertical.refresh_config_from_disk",
 ]
+
+# After fresh app install on a tenant site — load per-vertical sample
+# data so the dashboard isn't empty on first login. Idempotent: checks
+# Boon Tenant Config.sample_data_loaded first.
+after_install = "boonxpress_crm.api.onboarding.after_install"

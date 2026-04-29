@@ -1,0 +1,14 @@
+{
+  "vertical_type": "general",
+  "records": [
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Sample",
+      "last_name": "Customer",
+      "mobile_no": "+919876530001",
+      "email": "sample.demo@example.com",
+      "source": "Walk-in",
+      "status": "New"
+    }
+  ]
+}

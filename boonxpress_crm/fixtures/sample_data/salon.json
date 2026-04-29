@@ -1,0 +1,32 @@
+{
+  "vertical_type": "salon",
+  "records": [
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Priya",
+      "last_name": "Malhotra",
+      "mobile_no": "+919876500001",
+      "email": "priya.demo@example.com",
+      "source": "Walk-in",
+      "status": "New"
+    },
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Sneha",
+      "last_name": "Rao",
+      "mobile_no": "+919876500002",
+      "email": "sneha.demo@example.com",
+      "source": "Instagram",
+      "status": "Contacted"
+    },
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Anita",
+      "last_name": "Kumar",
+      "mobile_no": "+919876500003",
+      "email": "anita.demo@example.com",
+      "source": "Walk-in",
+      "status": "New"
+    }
+  ]
+}

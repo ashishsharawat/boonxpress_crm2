@@ -1,0 +1,39 @@
+{
+  "vertical_type": "usedcar",
+  "templates": {
+    "welcome": {
+      "meta_template_name": "boon_usedcar_welcome",
+      "language_code": "en",
+      "preview": "Hi {name}! Thanks for your interest in {vehicle}. Our sales team will reach out within 30 minutes with a quote and test drive options. Reply STOP to opt out.",
+      "body_params": [
+        { "key": "name", "default": "there" },
+        { "key": "vehicle", "default": "our vehicles" }
+      ]
+    },
+    "appointment_reminder": {
+      "meta_template_name": "boon_usedcar_test_drive_reminder",
+      "language_code": "en",
+      "preview": "Reminder: your test drive for {vehicle} is tomorrow at {time}. Address: {address}. Reply YES to confirm.",
+      "body_params": [
+        { "key": "vehicle", "default": "your selected vehicle" },
+        { "key": "time", "default": "the scheduled time" },
+        { "key": "address", "default": "our showroom" }
+      ]
+    },
+    "re_engagement": {
+      "meta_template_name": "boon_usedcar_re_engagement",
+      "language_code": "en",
+      "preview": "Hi {name}! New arrivals in your interested segment ({segment}) — reply CATALOGUE to see brochures.",
+      "body_params": [
+        { "key": "name", "default": "" },
+        { "key": "segment", "default": "your preferences" }
+      ]
+    },
+    "consent_request": {
+      "meta_template_name": "boon_usedcar_finance_consent",
+      "language_code": "en",
+      "preview": "Please review and sign your finance application form: {link}",
+      "body_params": [{ "key": "link", "default": "" }]
+    }
+  }
+}

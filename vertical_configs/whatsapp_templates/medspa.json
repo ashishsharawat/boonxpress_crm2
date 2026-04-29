@@ -1,0 +1,32 @@
+{
+  "vertical_type": "medspa",
+  "templates": {
+    "welcome": {
+      "meta_template_name": "boon_medspa_welcome",
+      "language_code": "en",
+      "preview": "Hi {name}! Thank you for your enquiry. Our medical team will reach out shortly to schedule your free consultation. Reply STOP to opt out.",
+      "body_params": [{ "key": "name", "default": "there" }]
+    },
+    "appointment_reminder": {
+      "meta_template_name": "boon_medspa_appointment_reminder",
+      "language_code": "en",
+      "preview": "Reminder: your {service} consultation is tomorrow at {time}. Please arrive 10 minutes early. Reply YES to confirm.",
+      "body_params": [
+        { "key": "service", "default": "consultation" },
+        { "key": "time", "default": "the scheduled time" }
+      ]
+    },
+    "re_engagement": {
+      "meta_template_name": "boon_medspa_re_engagement",
+      "language_code": "en",
+      "preview": "Hi {name}! Your last treatment results are best maintained with a touch-up session. Book within 14 days — reply BOOK.",
+      "body_params": [{ "key": "name", "default": "" }]
+    },
+    "consent_request": {
+      "meta_template_name": "boon_medspa_consent",
+      "language_code": "en",
+      "preview": "Please review and sign your treatment consent form before your appointment: {link}",
+      "body_params": [{ "key": "link", "default": "" }]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "vertical_type": "medspa",
+  "records": [
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Riya",
+      "last_name": "Shah",
+      "mobile_no": "+919876510001",
+      "email": "riya.demo@example.com",
+      "source": "Instagram",
+      "status": "New"
+    },
+    {
+      "doctype": "CRM Lead",
+      "first_name": "Aisha",
+      "last_name": "Khan",
+      "mobile_no": "+919876510002",
+      "email": "aisha.demo@example.com",
+      "source": "Facebook Ads",
+      "status": "Contacted"
+    }
+  ]
+}
