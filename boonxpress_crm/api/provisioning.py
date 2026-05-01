@@ -49,11 +49,26 @@ def provision_tenant(slug, business_name, owner_email, vertical_type):
         ])
 
         # Step 2: Install apps
-        for app in ["crm", "boonxpress_crm"]:
-            _run_bench(bench_path, [
-                "--site", site_name,
-                "install-app", app,
-            ])
+        # frappe_whatsapp is included so every tenant can connect their own
+        # WABA via Embedded Signup (v0.4.0). The app must already be in the
+        # Press bench (added once per bench, not per tenant); if it isn't
+        # we log + continue so provisioning doesn't fail on greenfield benches.
+        apps_to_install = ["crm", "boonxpress_crm", "frappe_whatsapp"]
+        for app in apps_to_install:
+            try:
+                _run_bench(bench_path, [
+                    "--site", site_name,
+                    "install-app", app,
+                ])
+            except subprocess.CalledProcessError as e:
+                if app == "frappe_whatsapp":
+                    frappe.log_error(
+                        f"frappe_whatsapp not yet present in bench {bench_path}; "
+                        f"site {site_name} will need manual install once added. {e}",
+                        "boonxpress_crm.provisioning",
+                    )
+                    continue
+                raise
 
         # Step 3: Set site config
         _run_bench(bench_path, [
