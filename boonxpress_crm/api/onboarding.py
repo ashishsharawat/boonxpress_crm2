@@ -32,9 +32,13 @@ CHECKLIST_STEPS = [
 
 
 def _fixtures_dir():
+    """Sample data lives under `seed_data/sample_data/` — NOT `fixtures/` —
+    because Frappe auto-imports anything in `fixtures/*.json` on migrate
+    and our format is bespoke (no top-level `name` field).
+    """
     api_dir = os.path.dirname(os.path.abspath(__file__))
     pkg_dir = os.path.dirname(api_dir)
-    return os.path.join(pkg_dir, "fixtures", "sample_data")
+    return os.path.join(pkg_dir, "seed_data", "sample_data")
 
 
 def load_sample_data(vertical_type=None):

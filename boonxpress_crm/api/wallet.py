@@ -470,8 +470,12 @@ def _record_transaction(
 
 
 def seed_pricing_table():
-    """Idempotent — load India pricing rows from fixtures/whatsapp_pricing.json
+    """Idempotent — load India pricing rows from seed_data/whatsapp_pricing.json
     if the table is empty. Called by after_migrate.
+
+    Note: stored under `seed_data/`, NOT `fixtures/`, because Frappe
+    auto-imports anything in `fixtures/*.json` and our format is bespoke
+    (no top-level `name` field — we let Frappe's autoname rule generate it).
     """
     if not frappe.db.exists("DocType", "WhatsApp Conversation Pricing"):
         return {"status": "skipped", "reason": "doctype_missing"}
@@ -481,11 +485,11 @@ def seed_pricing_table():
     import os
     path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        "fixtures",
+        "seed_data",
         "whatsapp_pricing.json",
     )
     if not os.path.exists(path):
-        return {"status": "no_fixture", "path": path}
+        return {"status": "no_seed_data", "path": path}
 
     with open(path) as f:
         rows = json.load(f)

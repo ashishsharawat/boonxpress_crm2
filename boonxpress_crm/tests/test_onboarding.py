@@ -33,17 +33,20 @@ class TestOnboardingChecklist(FrappeTestCase):
             mark_step_complete("not_a_real_step")
 
 
-class TestSampleDataFixtures(FrappeTestCase):
-    def test_fixtures_dir_exists(self):
+class TestSampleDataSeedFiles(FrappeTestCase):
+    """Sample data lives under seed_data/sample_data/ to avoid Frappe's
+    fixtures auto-importer (which expects top-level `name` fields)."""
+
+    def test_seed_dir_exists(self):
         self.assertTrue(os.path.isdir(_fixtures_dir()))
 
-    def test_general_fixture_present(self):
+    def test_general_seed_present(self):
         # general.json is the always-available fallback
         path = os.path.join(_fixtures_dir(), "general.json")
         self.assertTrue(os.path.exists(path))
 
-    def test_at_least_one_vertical_fixture_present(self):
-        # We ship sample data for at least salon, medspa, usedcar
+    def test_at_least_one_vertical_seed_present(self):
+        # We ship sample data for at least salon + general
         names = {f for f in os.listdir(_fixtures_dir()) if f.endswith(".json")}
         for required in ("salon.json", "general.json"):
             self.assertIn(required, names)
