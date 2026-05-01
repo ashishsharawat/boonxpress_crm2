@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "creation": "2026-04-29 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "balance_inr",
+  "bonus_credits_inr",
+  "free_utility_conversations_remaining",
+  "free_utility_quota",
+  "column_break_1",
+  "last_topup_at",
+  "last_reset_at",
+  "low_balance_alert_sent_at"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "balance_inr",
+   "fieldtype": "Currency",
+   "label": "Balance (INR)",
+   "non_negative": 1,
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Bonus credits earned from top-up tier discounts.",
+   "fieldname": "bonus_credits_inr",
+   "fieldtype": "Currency",
+   "label": "Bonus Credits (INR)",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "default": "100",
+   "description": "Utility-category conversations remaining in the free monthly tier.",
+   "fieldname": "free_utility_conversations_remaining",
+   "fieldtype": "Int",
+   "label": "Free Utility Convos Remaining",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "default": "100",
+   "description": "Free utility conversations included with the ₹999/month plan; resets monthly.",
+   "fieldname": "free_utility_quota",
+   "fieldtype": "Int",
+   "label": "Free Utility Monthly Quota",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_topup_at",
+   "fieldtype": "Datetime",
+   "label": "Last Top-up At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_reset_at",
+   "fieldtype": "Datetime",
+   "label": "Free Quota Last Reset At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "low_balance_alert_sent_at",
+   "fieldtype": "Datetime",
+   "label": "Low Balance Alert Sent At",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-04-29 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "BoonXpress CRM",
+ "name": "WhatsApp Credit Wallet",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

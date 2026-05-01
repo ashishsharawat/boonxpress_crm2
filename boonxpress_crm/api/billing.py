@@ -34,6 +34,8 @@ HANDLED_EVENTS = {
     "subscription.halted",
     "payment.failed",
     "payment.captured",
+    # v0.3.0: one-time WhatsApp credit top-up payments
+    "order.paid",
 }
 
 
@@ -70,6 +72,7 @@ def razorpay_webhook():
         "subscription.halted": _on_subscription_cancelled,
         "payment.failed": _on_payment_failed,
         "payment.captured": _on_subscription_charged,
+        "order.paid": _on_order_paid,
     }[event]
 
     result = handler(payload)
@@ -131,6 +134,26 @@ def _on_subscription_cancelled(payload):
     tenant.suspended = 1
     tenant.save(ignore_permissions=True)
     return {"tenant": tenant.name, "action": "suspended"}
+
+
+def _on_order_paid(payload):
+    """One-time payment for WhatsApp credit top-up (v0.3.0).
+
+    Razorpay's `order.paid` event fires when an Order (created via
+    wallet.create_purchase_order) is fully paid. We hand off to
+    wallet.apply_purchase which credits the wallet and marks the
+    Purchase Order as Paid.
+    """
+    payload_obj = payload.get("payload") or {}
+    order = (payload_obj.get("order") or {}).get("entity") or {}
+    payment = (payload_obj.get("payment") or {}).get("entity") or {}
+    order_id = order.get("id") or payment.get("order_id")
+    payment_id = payment.get("id")
+    if not order_id or not payment_id:
+        return {"warning": "missing_order_or_payment_id"}
+
+    from boonxpress_crm.api import wallet as wallet_api
+    return wallet_api.apply_purchase(order_id, payment_id)
 
 
 def _on_payment_failed(payload):

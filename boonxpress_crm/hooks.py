@@ -39,8 +39,13 @@ scheduler_events = {
 # site from the latest JSON shipped in vertical_configs/. Existing tenants
 # automatically pick up new schema keys (conversion_mode, leads_segments,
 # profile_fields, etc.) without manual UI edits.
+#
+# v0.3.0: also seed the WhatsApp Conversation Pricing table on first
+# migrate so wallet.check_and_reserve has prices available without a
+# manual setup step.
 after_migrate = [
     "boonxpress_crm.api.vertical.refresh_config_from_disk",
+    "boonxpress_crm.api.wallet.seed_pricing_table",
 ]
 
 # After fresh app install on a tenant site — load per-vertical sample
