@@ -1,0 +1,137 @@
+{
+ "actions": [],
+ "autoname": "format:WCL-{YYYY}-{#####}",
+ "creation": "2026-04-29 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "waba_phone_id",
+  "customer_phone",
+  "category",
+  "country_code",
+  "column_break_1",
+  "conversation_started_at",
+  "conversation_expires_at",
+  "meta_conversation_id",
+  "section_break_billing",
+  "charged",
+  "charge_amount_inr",
+  "charge_transaction",
+  "is_free_quota_use"
+ ],
+ "fields": [
+  {
+   "fieldname": "waba_phone_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "WABA Phone ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_phone",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "Marketing\nUtility\nAuthentication\nService",
+   "reqd": 1
+  },
+  {
+   "default": "IN",
+   "fieldname": "country_code",
+   "fieldtype": "Data",
+   "label": "Country Code",
+   "length": 2
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "conversation_started_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Started At",
+   "reqd": 1
+  },
+  {
+   "description": "+24 hours from started_at; messages within this window do not open a new conversation.",
+   "fieldname": "conversation_expires_at",
+   "fieldtype": "Datetime",
+   "label": "Expires At"
+  },
+  {
+   "description": "Conversation ID returned by Meta in the message status webhook.",
+   "fieldname": "meta_conversation_id",
+   "fieldtype": "Data",
+   "label": "Meta Conversation ID"
+  },
+  {
+   "fieldname": "section_break_billing",
+   "fieldtype": "Section Break",
+   "label": "Billing"
+  },
+  {
+   "default": "0",
+   "fieldname": "charged",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Charged"
+  },
+  {
+   "fieldname": "charge_amount_inr",
+   "fieldtype": "Currency",
+   "label": "Charge Amount (INR)",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "fieldname": "charge_transaction",
+   "fieldtype": "Link",
+   "label": "Charge Transaction",
+   "options": "WhatsApp Credit Transaction"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_free_quota_use",
+   "fieldtype": "Check",
+   "label": "Free Quota Used"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-29 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "BoonXpress CRM",
+ "name": "WhatsApp Conversation Log",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "title_field": "customer_phone",
+ "track_changes": 1
+}

@@ -1,0 +1,115 @@
+{
+ "actions": [],
+ "autoname": "format:WCP-{country_code}-{category}",
+ "creation": "2026-04-29 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "country_code",
+  "category",
+  "meta_cost_inr",
+  "markup_pct",
+  "customer_price_inr",
+  "column_break_1",
+  "effective_from",
+  "active",
+  "notes"
+ ],
+ "fields": [
+  {
+   "default": "IN",
+   "fieldname": "country_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Country Code",
+   "length": 2,
+   "reqd": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "Marketing\nUtility\nAuthentication\nService",
+   "reqd": 1
+  },
+  {
+   "description": "Meta's wholesale cost per conversation (24h window).",
+   "fieldname": "meta_cost_inr",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Meta Cost (INR)",
+   "options": "INR",
+   "reqd": 1
+  },
+  {
+   "default": "40",
+   "description": "Our markup over Meta cost (percent).",
+   "fieldname": "markup_pct",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Markup %",
+   "reqd": 1
+  },
+  {
+   "description": "Auto-computed: meta_cost_inr × (1 + markup_pct/100).",
+   "fieldname": "customer_price_inr",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Customer Price (INR)",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Effective From",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-29 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "BoonXpress CRM",
+ "name": "WhatsApp Conversation Pricing",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "category",
+ "track_changes": 1
+}

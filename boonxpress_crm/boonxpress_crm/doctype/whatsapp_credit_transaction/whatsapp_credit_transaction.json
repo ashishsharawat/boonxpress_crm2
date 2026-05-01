@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "autoname": "format:WCT-{YYYY}-{#####}",
+ "creation": "2026-04-29 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transaction_type",
+  "amount_inr",
+  "balance_after_inr",
+  "currency",
+  "column_break_1",
+  "related_conversation_log",
+  "related_purchase_order",
+  "related_message",
+  "section_break_meta",
+  "notes",
+  "is_bonus",
+  "is_free_quota_use"
+ ],
+ "fields": [
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Top-up\nBonus\nConversation Charge\nFree Quota Use\nRefund\nAdjustment",
+   "reqd": 1
+  },
+  {
+   "description": "Signed: positive for credits added, negative for charges.",
+   "fieldname": "amount_inr",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount (INR)",
+   "options": "INR",
+   "reqd": 1
+  },
+  {
+   "fieldname": "balance_after_inr",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Balance After (INR)",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "related_conversation_log",
+   "fieldtype": "Link",
+   "label": "Conversation Log",
+   "options": "WhatsApp Conversation Log"
+  },
+  {
+   "fieldname": "related_purchase_order",
+   "fieldtype": "Link",
+   "label": "Purchase Order",
+   "options": "WhatsApp Credit Purchase Order"
+  },
+  {
+   "fieldname": "related_message",
+   "fieldtype": "Data",
+   "label": "Related WhatsApp Message ID"
+  },
+  {
+   "fieldname": "section_break_meta",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_bonus",
+   "fieldtype": "Check",
+   "label": "Is Bonus Credit"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_free_quota_use",
+   "fieldtype": "Check",
+   "label": "Is Free Quota Use"
+  }
+ ],
+ "in_create": 0,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-29 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "BoonXpress CRM",
+ "name": "WhatsApp Credit Transaction",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 0
+  },
+  {
+   "read": 1,
+   "role": "All"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "title_field": "transaction_type",
+ "track_changes": 1
+}
